@@ -36,6 +36,7 @@ const nuxtConfig : NuxtConfig = {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/style-resources',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -47,7 +48,13 @@ const nuxtConfig : NuxtConfig = {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
-  srcDir: 'src/'
+  srcDir: 'src/',
+
+  styleResources: {
+    scss: [
+      '~/assets/styles/_variable.scss'
+    ]
+  }
 }
 
 export default nuxtConfig
