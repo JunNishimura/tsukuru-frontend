@@ -11,5 +11,9 @@ module.exports = {
   ],
   plugins: [],
   // add your custom rules here
-  rules: {},
+  rules: {
+    'semi': ['error', 'never'],
+    'quotes': ['error', 'single'],
+    'vue/multi-word-component-names': 'off'
+  },
 }
