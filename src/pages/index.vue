@@ -1,11 +1,13 @@
 <template>
-  <Tutorial />
+  <h1>Home Page</h1>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { defineComponent } from '@nuxtjs/composition-api'
 
-export default Vue.extend({
-  name: 'IndexPage',
+export default defineComponent({
+  setup() {
+    
+  }
 })
 </script>
