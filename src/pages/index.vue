@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import NavBar from '~/components/NavBar.vue'
+import NavBar from '~/components/organisms/NavBar.vue'
 
 export default defineComponent({
   components: {

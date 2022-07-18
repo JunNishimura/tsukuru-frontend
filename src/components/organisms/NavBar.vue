@@ -1,34 +1,32 @@
 <template>
   <div class="navbar">
-    <div class="navbar-container">
-      <div class="navbar-upper">
-        <div class="navbar-upper__icon">
-          <img src="~/assets/images/tsukuru-logo.png">
-        </div>
-        <template v-if="isLoggedIn">
-          <div class="navbar-upper__item navbar-upper__itemLeft">
-            投稿する
-          </div>
-          <div class="navbar-upper__item">
-            プロフィール
-          </div>
-        </template>
-        <template v-else>
-          <div class="navbar-upper__item navbar-upper__itemLeft">
-            サインアップ
-          </div>
-          <div class="navbar-upper__item">
-            ログイン
-          </div>
-        </template>
+    <div class="navbar-upper">
+      <div class="navbar-upper__icon">
+        <img src="~/assets/images/tsukuru-logo.png">
       </div>
-      <div class="navbar-lower">
-        <div class="navbar-lower__item">
-          タイムライン
+      <template v-if="isLoggedIn">
+        <div class="navbar-upper__item navbar-upper__itemLeft">
+          投稿する
         </div>
-        <div class="navbar-lower__item">
-          トレンド
+        <div class="navbar-upper__item">
+          プロフィール
         </div>
+      </template>
+      <template v-else>
+        <div class="navbar-upper__item navbar-upper__itemLeft">
+          サインアップ
+        </div>
+        <div class="navbar-upper__item">
+          ログイン
+        </div>
+      </template>
+    </div>
+    <div class="navbar-lower">
+      <div class="navbar-lower__item">
+        タイムライン
+      </div>
+      <div class="navbar-lower__item">
+        トレンド
       </div>
     </div>
   </div>
@@ -44,7 +42,7 @@ export default defineComponent({
     return {
       isLoggedIn
     }
-  },
+  }
 })
 </script>
 
