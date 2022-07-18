@@ -21,7 +21,7 @@
           <tk-link
             to="/signup"
           >
-            サインアップ
+            新規登録
           </tk-link>
         </div>
         <div class="navbar-upper__item">
