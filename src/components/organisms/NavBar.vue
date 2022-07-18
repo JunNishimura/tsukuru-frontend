@@ -1,34 +1,44 @@
 <template>
   <div class="navbar">
-    <div class="navbar-container">
-      <div class="navbar-upper">
+    <div class="navbar-upper">
+      <tk-link
+        to="/"
+      >
         <div class="navbar-upper__icon">
           <img src="~/assets/images/tsukuru-logo.png">
         </div>
-        <template v-if="isLoggedIn">
-          <div class="navbar-upper__item navbar-upper__itemLeft">
-            投稿する
-          </div>
-          <div class="navbar-upper__item">
-            プロフィール
-          </div>
-        </template>
-        <template v-else>
-          <div class="navbar-upper__item navbar-upper__itemLeft">
+      </tk-link>
+      <template v-if="isLoggedIn">
+        <div class="navbar-upper__item navbar-upper__itemLeft">
+          投稿する
+        </div>
+        <div class="navbar-upper__item">
+          プロフィール
+        </div>
+      </template>
+      <template v-else>
+        <div class="navbar-upper__item navbar-upper__itemLeft">
+          <tk-link
+            to="/signup"
+          >
             サインアップ
-          </div>
-          <div class="navbar-upper__item">
+          </tk-link>
+        </div>
+        <div class="navbar-upper__item">
+          <tk-link
+            to="login"
+          >
             ログイン
-          </div>
-        </template>
+          </tk-link>
+        </div>
+      </template>
+    </div>
+    <div class="navbar-lower">
+      <div class="navbar-lower__item">
+        タイムライン
       </div>
-      <div class="navbar-lower">
-        <div class="navbar-lower__item">
-          タイムライン
-        </div>
-        <div class="navbar-lower__item">
-          トレンド
-        </div>
+      <div class="navbar-lower__item">
+        トレンド
       </div>
     </div>
   </div>
@@ -36,15 +46,19 @@
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
+import TkLink from '~/components/atoms/TkLink.vue'
 
 export default defineComponent({
+  components: {
+    TkLink
+  },
   setup() {
-    const isLoggedIn = true
+    const isLoggedIn = false
 
     return {
       isLoggedIn
     }
-  },
+  }
 })
 </script>
 

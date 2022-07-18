@@ -1,17 +1,14 @@
 <template>
-  <nav-bar />
+  <auth-template />
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import NavBar from '~/components/organisms/NavBar.vue'
+import AuthTemplate from '~/components/templates/auth/index.vue'
 
 export default defineComponent({
   components: {
-    NavBar
+    AuthTemplate
   }
 })
 </script>
-
-<style lang="scss" scoped>
-</style>
