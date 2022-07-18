@@ -9,9 +9,6 @@ import NavBar from '~/components/organisms/NavBar.vue'
 export default defineComponent({
   components: {
     NavBar
-  },
-  setup() {
-
   }
 })
 </script>

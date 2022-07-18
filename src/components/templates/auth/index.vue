@@ -14,9 +14,6 @@ export default defineComponent({
   components: {
     AuthHeader,
     AuthForm
-  },
-  setup() {
-
   }
 })
 </script>

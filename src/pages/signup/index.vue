@@ -1,5 +1,5 @@
 <template>
-  <auth-template auth-kind="signup" />
+  <auth-template />
 </template>
 
 <script lang="ts">
@@ -9,9 +9,6 @@ import AuthTemplate from '~/components/templates/auth/index.vue'
 export default defineComponent({
   components: {
     AuthTemplate
-  },
-  setup() {
-    
   }
 })
 </script>
