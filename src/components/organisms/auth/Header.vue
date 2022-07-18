@@ -1,12 +1,28 @@
 <template>
   <div class="authHeader">
     <div class="authHeader-container">
-      <div class="authHeader-container__icon">
-        <img src="~/assets/images/tsukuru-logo.png">
-      </div>
+      <tk-link
+        to="/"
+      >
+        <div class="authHeader-container__icon">
+          <img src="~/assets/images/tsukuru-logo.png">
+        </div>
+      </tk-link>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { defineComponent } from '@nuxtjs/composition-api'
+import TkLink from '~/components/atoms/TkLink.vue'
+
+export default defineComponent({
+  components: {
+    TkLink
+  }
+})
+</script>
+
 
 <style lang="scss" scoped>
 .authHeader {
