@@ -12,5 +12,6 @@
 }
 body {
   font-size: 24px;
+  font-family: "M PLUS Rounded 1c", "ヒラギノ丸ゴ ProN W4", "Yu Gothic UI", "Yu Gothic", sans-serif;
 }
 </style>
