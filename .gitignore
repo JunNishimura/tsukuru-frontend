@@ -90,3 +90,4 @@ sw.*
 *.swp
 
 src/assets/fonts/*
+src/assets/css/*
