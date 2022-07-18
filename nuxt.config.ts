@@ -29,7 +29,8 @@ const nuxtConfig : NuxtConfig = {
   buildModules: [
     // https://go.nuxtjs.dev/typescript
     '@nuxt/typescript-build',
-    '@nuxtjs/composition-api/module'
+    '@nuxtjs/composition-api/module',
+    '@nuxtjs/google-fonts'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -54,6 +55,12 @@ const nuxtConfig : NuxtConfig = {
     scss: [
       '~/assets/styles/_variable.scss'
     ]
+  },
+
+  googleFonts: {
+    families: {
+      'M PLUS Rounded 1c': [400, 700]
+    }
   }
 }
 
