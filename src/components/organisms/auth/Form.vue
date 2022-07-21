@@ -8,25 +8,30 @@
         <label for="username">
           ユーザー名
         </label>
-        <input id="username" v-model="formData.username" type="text" placeholder="つくる 太郎">
+        <input id="username" v-model="username.value" type="text" placeholder="つくる 太郎" @blur="() => username.isValid = true">
+        <span v-if="!username.isValid" class="authForm-group__alert">ユーザー名が不正です。</span>
       </div>
       <div class="authForm-group">
         <label for="e-mail">
           メールアドレス
         </label>
-        <input id="e-mail" v-model="formData.email" type="text" placeholder="tsukuru.taro@example.com">
+        <input id="e-mail" v-model="email.value" type="text" placeholder="tsukuru.taro@example.com" @blur="() => email.isValid = true">
+        <span v-if="!email.isValid" class="authForm-group__alert">メールアドレスが不正です。</span>
       </div>
       <div class="authForm-group">
-        <label for="password-1">
+        <label for="password">
           パスワード
         </label>
-        <input id="password-1" v-model="formData.password1" type="password">
+        <input id="password" v-model="password.value" type="password" @blur="() => password.isValid = true">
+        <span v-if="!password.isValid" class="authForm-group__alert">パスワードが不正です。</span>
       </div>
       <div v-if="isSignup" class="authForm-group">
-        <label for="password-2">
-          パスワード（再確認）
+        <label for="passwordConfirm">
+          パスワード（確認用）
         </label>
-        <input id="password-2" v-model="formData.password2" type="password">
+        <input id="passwordConfirm" v-model="passwordConfirm.value" type="password" @blur="() => passwordConfirm.isValid = true">
+        <span v-if="!passwordConfirm.isValid" class="authForm-group__alert">パスワード確認用が不正です。</span>
+        <span v-if="!isPasswordMatched" class="authForm-group__alert">パスワードが合致しません。</span>
       </div>
       <div class="authForm-group authForm-button">
         <input type="submit" value="送信">
@@ -36,13 +41,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, reactive } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, ref, reactive } from '@nuxtjs/composition-api'
+import { required, email as emailValidator, password as passwordValidator } from '~/helpers/validation'
 
-type FormData = {
-  username: string
-  email: string
-  password1: string
-  password2: string
+type InputData = {
+  value: string
+  isValid: boolean
 }
 
 export default defineComponent({
@@ -51,21 +55,58 @@ export default defineComponent({
 
     const formTitle = route.value.name === 'signup' ? '新規登録' : 'ログイン'
     const isSignup = route.value.name === 'signup'
-    const formData = reactive<FormData>({
-      username: '',
-      email: '',
-      password1: '',
-      password2: ''
+    const username = reactive<InputData>({
+      value: '',
+      isValid: true
     })
+    const email = reactive<InputData>({
+      value: '',
+      isValid: true
+    })
+    const password = reactive<InputData>({
+      value: '',
+      isValid: true
+    })
+    const passwordConfirm = reactive<InputData>({
+      value: '',
+      isValid: true
+    })
+    const isPasswordMatched = ref(true)
 
-    const submitForm = () => {
-      console.log(formData)
+    const validateForm = (): void => {
+      if (!required(username.value)) {
+        username.isValid = false
+      }
+      if (!(required(email.value) && emailValidator(email.value))) {
+        email.isValid = false
+      }
+      if (!(required(password.value) && passwordValidator(password.value))) {
+        password.isValid = false
+      }
+      if (!(required(passwordConfirm.value) && passwordValidator(passwordConfirm.value))) {
+        passwordConfirm.isValid = false
+      }
+      isPasswordMatched.value = !password.value && !passwordConfirm.value && password.value === passwordConfirm.value
+    }
+
+    const submitForm = (): void => {
+      validateForm()
+
+      if (username.isValid && email.isValid && password.isValid && passwordConfirm.isValid) {
+        console.log('success')
+      } else {
+        console.log('fail')
+      }
     }
 
     return {
       formTitle,
       isSignup,
-      formData,
+      username,
+      email,
+      password,
+      passwordConfirm,
+      isPasswordMatched,
       submitForm
     }
   }
@@ -84,6 +125,9 @@ export default defineComponent({
   &-group {
     font-size: 18px;
     margin: 24px 0;
+    &__alert {
+      color: $colorRed;
+    }
   }
   &-button {
     margin-top: 80px;
