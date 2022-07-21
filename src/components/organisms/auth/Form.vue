@@ -9,24 +9,29 @@
           ユーザー名
         </label>
         <input id="username" v-model="username.value" type="text" placeholder="つくる 太郎" @blur="() => username.isValid = true">
+        <span v-if="!username.isValid" class="authForm-group__alert">ユーザー名が不正です。</span>
       </div>
       <div class="authForm-group">
         <label for="e-mail">
           メールアドレス
         </label>
         <input id="e-mail" v-model="email.value" type="text" placeholder="tsukuru.taro@example.com" @blur="() => email.isValid = true">
+        <span v-if="!email.isValid" class="authForm-group__alert">メールアドレスが不正です。</span>
       </div>
       <div class="authForm-group">
         <label for="password">
           パスワード
         </label>
         <input id="password" v-model="password.value" type="password" @blur="() => password.isValid = true">
+        <span v-if="!password.isValid" class="authForm-group__alert">パスワードが不正です。</span>
       </div>
       <div v-if="isSignup" class="authForm-group">
         <label for="passwordConfirm">
-          パスワード（再確認）
+          パスワード（確認用）
         </label>
         <input id="passwordConfirm" v-model="passwordConfirm.value" type="password" @blur="() => passwordConfirm.isValid = true">
+        <span v-if="!passwordConfirm.isValid" class="authForm-group__alert">パスワード確認用が不正です。</span>
+        <span v-if="!isPasswordMatched" class="authForm-group__alert">パスワードが合致しません。</span>
       </div>
       <div class="authForm-group authForm-button">
         <input type="submit" value="送信">
@@ -36,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, reactive } from '@nuxtjs/composition-api'
+import { defineComponent, useRoute, ref, reactive } from '@nuxtjs/composition-api'
 import { required, email as emailValidator, password as passwordValidator } from '~/helpers/validation'
 
 type InputData = {
@@ -52,22 +57,22 @@ export default defineComponent({
     const isSignup = route.value.name === 'signup'
     const username = reactive<InputData>({
       value: '',
-      isValid: false
+      isValid: true
     })
     const email = reactive<InputData>({
       value: '',
-      isValid: false
+      isValid: true
     })
     const password = reactive<InputData>({
       value: '',
-      isValid: false
+      isValid: true
     })
     const passwordConfirm = reactive<InputData>({
       value: '',
-      isValid: false
+      isValid: true
     })
+    const isPasswordMatched = ref(true)
 
-    const isPasswordMatched = password.value === passwordConfirm.value
     const validateForm = (): void => {
       if (!required(username.value)) {
         username.isValid = false
@@ -78,9 +83,10 @@ export default defineComponent({
       if (!(required(password.value) && passwordValidator(password.value))) {
         password.isValid = false
       }
-      if (!(required(passwordConfirm.value) && passwordValidator(passwordConfirm.value) && isPasswordMatched )) {
+      if (!(required(passwordConfirm.value) && passwordValidator(passwordConfirm.value))) {
         passwordConfirm.isValid = false
       }
+      isPasswordMatched.value = !password.value && !passwordConfirm.value && password.value === passwordConfirm.value
     }
 
     const submitForm = (): void => {
@@ -100,6 +106,7 @@ export default defineComponent({
       email,
       password,
       passwordConfirm,
+      isPasswordMatched,
       submitForm
     }
   }
@@ -118,6 +125,9 @@ export default defineComponent({
   &-group {
     font-size: 18px;
     margin: 24px 0;
+    &__alert {
+      color: $colorRed;
+    }
   }
   &-button {
     margin-top: 80px;
