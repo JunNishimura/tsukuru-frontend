@@ -45,18 +45,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@nuxtjs/composition-api'
+import Vue from 'vue'
 import TkLink from '~/components/atoms/TkLink.vue'
 
-export default defineComponent({
+export default Vue.extend({
   components: {
     TkLink
   },
-  setup() {
-    const isLoggedIn = false
-
-    return {
-      isLoggedIn
+  computed: {
+    isLoggedIn() {
+      return this.$auth.loggedIn
     }
   }
 })
