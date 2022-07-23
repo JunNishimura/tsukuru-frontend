@@ -3,7 +3,7 @@
     <div class="authForm-title">
       {{ formTitle }}
     </div>
-    <form @submit.prevent="submitForm">
+    <form @submit.prevent="onSubmit">
       <div v-if="isSignup" class="authForm-group">
         <label for="username">
           ユーザー名
@@ -41,73 +41,108 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, useRoute, ref, reactive } from '@nuxtjs/composition-api'
+import Vue from 'vue'
 import { required, email as emailValidator, password as passwordValidator } from '~/helpers/validation'
+import { signup } from '~/api/signup'
 
-type InputData = {
-  value: string
-  isValid: boolean
-}
-
-export default defineComponent({
-  setup() {
-    const route = useRoute()
-
-    const formTitle = route.value.name === 'signup' ? '新規登録' : 'ログイン'
-    const isSignup = route.value.name === 'signup'
-    const username = reactive<InputData>({
-      value: '',
-      isValid: true
-    })
-    const email = reactive<InputData>({
-      value: '',
-      isValid: true
-    })
-    const password = reactive<InputData>({
-      value: '',
-      isValid: true
-    })
-    const passwordConfirm = reactive<InputData>({
-      value: '',
-      isValid: true
-    })
-    const isPasswordMatched = ref(true)
-
-    const validateForm = (): void => {
-      if (!required(username.value)) {
-        username.isValid = false
-      }
-      if (!(required(email.value) && emailValidator(email.value))) {
-        email.isValid = false
-      }
-      if (!(required(password.value) && passwordValidator(password.value))) {
-        password.isValid = false
-      }
-      if (!(required(passwordConfirm.value) && passwordValidator(passwordConfirm.value))) {
-        passwordConfirm.isValid = false
-      }
-      isPasswordMatched.value = !password.value && !passwordConfirm.value && password.value === passwordConfirm.value
-    }
-
-    const submitForm = (): void => {
-      validateForm()
-
-      if (username.isValid && email.isValid && password.isValid && passwordConfirm.isValid) {
-        console.log('success')
-      } else {
-        console.log('fail')
-      }
-    }
-
+export default Vue.extend({
+  data() {
     return {
-      formTitle,
-      isSignup,
-      username,
-      email,
-      password,
-      passwordConfirm,
-      isPasswordMatched,
-      submitForm
+      username: {
+        value: '',
+        isValid: true
+      },
+      email: {
+        value: '',
+        isValid: true
+      },
+      password: {
+        value: '',
+        isValid: true
+      },
+      passwordConfirm: {
+        value: '',
+        isValid: true
+      },
+      isPasswordMatched: true
+    }
+  },
+  computed: {
+    formTitle() {
+      return this.$route.name === 'signup' ? '新規登録': 'ログイン'
+    },
+    isSignup() {
+      return this.$route.name === 'signup'
+    }
+  },
+  methods: {
+    validateForm() {
+      if (!required(this.username.value)) {
+        this.username.isValid = false
+      }
+      if (!(required(this.email.value) && emailValidator(this.email.value))) {
+        this.email.isValid = false
+      }
+      if (!(required(this.password.value) && passwordValidator(this.password.value))) {
+        this.password.isValid = false
+      }
+      if (!(required(this.passwordConfirm.value) && passwordValidator(this.passwordConfirm.value))) {
+        this.passwordConfirm.isValid = false
+      }
+      this.isPasswordMatched = !!this.password.value && !!this.passwordConfirm.value && this.password.value === this.passwordConfirm.value
+    },
+    async submitSignupForm() {
+      const formData = {
+        name: this.username.value,
+        email: this.email.value,
+        password: this.password.value,
+        password_confirmation: this.passwordConfirm.value
+      }
+      try {
+        await signup(this.$axios, formData).then(() => {
+          console.log(this.email.value, this.password.value)
+        })
+        await this.$auth.loginWith('local', {
+          data: {
+            email: this.email.value,
+            password: this.password.value
+          }
+        })
+        this.clearForm()
+      } catch {
+        console.log('signup error')
+      }
+    },
+    async submitLoginForm() {
+      try {
+        await this.$auth.loginWith('local', {
+          data: {
+            email: this.email.value,
+            password: this.password.value
+          }
+        })
+        this.clearForm()
+      } catch {
+      }
+    },
+    clearForm() {
+      this.username.value = ''
+      this.username.isValid = true
+      this.email.value = ''
+      this.email.isValid = true
+      this.password.value = ''
+      this.password.isValid = true
+      this.passwordConfirm.value = ''
+      this.passwordConfirm.isValid = true
+    },
+    onSubmit() {
+      this.validateForm()
+
+      if (this.isSignup && this.username.isValid && this.email.isValid && this.password.isValid && this.passwordConfirm.isValid) {
+        this.submitSignupForm()
+      } else if (!this.isSignup && this.email.isValid && this.password.isValid) {
+        this.submitLoginForm()
+      }
     }
   }
 })
