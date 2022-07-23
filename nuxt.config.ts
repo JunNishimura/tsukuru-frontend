@@ -1,4 +1,8 @@
-import { NuxtConfig } from "@nuxt/types"
+import { NuxtConfig } from '@nuxt/types'
+
+const environment = process.env.NODE_ENV || 'development'
+const envSet = require(`./env.${environment}.js`)
+const browserBaseURL = envSet.tsukuruApiBaseUrl
 
 const nuxtConfig : NuxtConfig = {
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -20,7 +24,9 @@ const nuxtConfig : NuxtConfig = {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    '~/plugins/axios.ts'
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -37,13 +43,34 @@ const nuxtConfig : NuxtConfig = {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
+    '@nuxtjs/proxy',
     '@nuxtjs/style-resources',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    browserBaseURL,
+    proxy: true
+  },
+
+  auth: {
+    redirect: {
+        login: '/login',
+        logout: '/logout',
+        callback: '/',
+        home: '/',
+    },
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: '/v1/auth/sign_in', method: 'post', propertyName: 'token' },
+          logout: { url: '/v1/auth/sign_out', method: 'delete' },
+          user: false,
+        },
+      }
+    }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -61,6 +88,9 @@ const nuxtConfig : NuxtConfig = {
     families: {
       'M PLUS Rounded 1c': [400, 700]
     }
+  },
+  proxy: {
+    '/api': 'http://localhost:3000'
   }
 }
 
