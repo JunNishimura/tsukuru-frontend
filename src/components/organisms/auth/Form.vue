@@ -41,11 +41,10 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { required, email as emailValidator, password as passwordValidator } from '~/helpers/validation'
 import { signup } from '~/api/signup'
 
-export default Vue.extend({
+export default {
   data() {
     return {
       username: {
@@ -145,7 +144,7 @@ export default Vue.extend({
       }
     }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -154,11 +153,11 @@ export default Vue.extend({
   margin: 8rem auto;
   &-title {
     text-align: center;
-    font-size: 32px;
+    font-size: $fontSize-3;
     padding: 24px 0;
   }
   &-group {
-    font-size: 18px;
+    font-size: $fontSize-1;
     margin: 24px 0;
     &__alert {
       color: $colorRed;
@@ -174,7 +173,7 @@ export default Vue.extend({
     input, button {
       width: 100%;
       height: 48px;
-      font-size: 18px;
+      font-size: $fontSize-1;
       border: none;
     }
     input {
