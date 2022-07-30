@@ -1,6 +1,6 @@
 <template>
   <div class="tagCard">
-    {{ tag.name }}
+    #{{ tag.name }}
   </div>
 </template>
 
