@@ -9,7 +9,10 @@
         </div>
       </tk-link>
       <template v-if="isLoggedIn">
-        <div class="navbar-upper__item navbar-upper__itemLeft">
+        <div class="navbar-upper__item logout navbar-upper__itemLeft" @click="onLogout">
+          ログアウト
+        </div>
+        <div class="navbar-upper__item">
           投稿する
         </div>
         <div class="navbar-upper__item">
@@ -33,22 +36,13 @@
         </div>
       </template>
     </div>
-    <div class="navbar-lower">
-      <div class="navbar-lower__item">
-        タイムライン
-      </div>
-      <div class="navbar-lower__item">
-        トレンド
-      </div>
-    </div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import TkLink from '~/components/atoms/TkLink.vue'
 
-export default Vue.extend({
+export default {
   components: {
     TkLink
   },
@@ -56,8 +50,14 @@ export default Vue.extend({
     isLoggedIn() {
       return this.$auth.loggedIn
     }
+  },
+  methods: {
+    onLogout() {
+      console.log('login: ', this.$store.state.auth.loggedIn)
+      console.log('user: ', this.$auth.user)
+    }
   }
-})
+}
 </script>
 
 <style lang="scss" scoped>
@@ -67,7 +67,7 @@ export default Vue.extend({
   color: #ffffff;
   &-upper {
     margin: 0 auto;
-    width: 80%;
+    width: 60%;
     height: 80px;
     display: flex;
     align-items: center;
@@ -87,16 +87,8 @@ export default Vue.extend({
       padding-left: 24px;
     }
   }
-  &-lower {
-    margin: 0 auto;
-    width: 80%;
-    height: 80px;
-    display: flex;
-    align-items: flex-end;
-    &__item {
-      padding: 0 24px 8px 0;
-      height: fit-content;
-    }
+  .logout {
+    cursor: pointer;
   }
 }
 </style>

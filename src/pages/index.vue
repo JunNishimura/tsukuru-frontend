@@ -1,14 +1,18 @@
 <template>
-  <nav-bar />
+  <base-template>
+    <template #content>
+      
+    </template>
+  </base-template>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@nuxtjs/composition-api'
-import NavBar from '~/components/organisms/NavBar.vue'
+import BaseTemplate from '~/components/templates/BaseTemplate.vue'
 
 export default defineComponent({
   components: {
-    NavBar
+    BaseTemplate
   }
 })
 </script>
