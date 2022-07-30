@@ -1,6 +1,6 @@
 <template>
   <div class="ideaBoard">
-    <idea-card 
+    <idea-card
       v-for="idea in ideas" 
       :key="idea.id" 
       :idea="idea"
@@ -27,3 +27,11 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="scss" scoped>
+.ideaCard {
+  & + & {
+    margin-top: 1.6rem;
+  }
+}
+</style>
