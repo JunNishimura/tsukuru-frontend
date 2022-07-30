@@ -9,13 +9,22 @@ export const userSample = {
   profile_word: '機械学習に興味があります'
 }
 
-export const ideasSample = [{
-  id: 1,
-  user_id: 1,
-  title: '学生のためのマッチングアプリを作りたい',
-  description: '大学生向けのマッチングアプリ。同じ大学で出会ったことのない人が気軽に出会えるようなアプリを作りたい。',
-  post_date: '20220724'
-}]
+export const ideasSample = [
+  {
+    id: 1,
+    user_id: 1,
+    title: '学生のためのマッチングアプリを作りたい',
+    description: '大学生向けのマッチングアプリ。同じ大学で出会ったことのない人が気軽に出会えるようなアプリを作りたい。',
+    post_date: '20220724'
+  },
+  {
+    id: 2,
+    user_id: 1,
+    title: '学生のためのマッチングアプリを作りたい',
+    description: '大学生向けのマッチングアプリ。同じ大学で出会ったことのない人が気軽に出会えるようなアプリを作りたい。',
+    post_date: '20220724'
+  }
+]
 
 export const tagsSample = [
   {
